@@ -4,6 +4,7 @@ from extensions import ConvertationException, CurrencyConverter
 
 bot = telebot.TeleBot(TOKEN)
 
+
 # Обрабатываются все сообщения, содержащие команды '/start' or '/help'.
 @bot.message_handler(commands=['start', 'help'])
 def help(message: telebot.types.Message):
@@ -15,13 +16,15 @@ def help(message: telebot.types.Message):
            '\n/start или /help - получить помощь\n'
     bot.reply_to(message, text)
 
-# Обрабатчик команды '/values' - список валют доступных для конвертации:
+
+# Обработчик команды '/values' - список валют доступных для конвертации:
 @bot.message_handler(commands=['values'])
 def values(message: telebot.types.Message):
     text = 'Доступные валюты:'
     for key in keys.keys():
         text = '\n'.join((text, key))
     bot.reply_to(message, text)
+
 
 # Запрос на конвертацию:
 @bot.message_handler(content_types=['text'])
@@ -44,6 +47,5 @@ def convert(message: telebot.types.Message):
         bot.send_message(message.chat.id, text)
 
 
-bot.polling()
-
+bot.polling(none_stop=True)
 
