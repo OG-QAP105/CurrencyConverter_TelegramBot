@@ -1,19 +1,20 @@
 import telebot
-from config import keys, TOKEN
+from config import keys, TOKEN, text_help
 from extensions import ConvertationException, CurrencyConverter
 
 bot = telebot.TeleBot(TOKEN)
 
+# Обрабатываются все сообщения, содержащие команды '/start' or '/help'.
+@bot.message_handler(commands=['start'])
+def start(message: telebot.types.Message):
+    text = 'Привет!\n Я Бот-Конвертер валют. Я умею делать следующее:\n' + text_help
+    bot.reply_to(message, text)
+
 
 # Обрабатываются все сообщения, содержащие команды '/start' or '/help'.
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['help'])
 def help(message: telebot.types.Message):
-    text = 'Для конвертации введите команду в формате\n (в одну строку через пробел):\n' \
-           '\n<имя покупаемой валюты>  <имя валюты за которую покупаем>  <кол-во покупаемой валюты>\n ' \
-           '\nПример:  доллар рубль 1\n' \
-           '\nКоманды:' \
-           '\n/values - посмотреть список доступных валют.' \
-           '\n/start или /help - получить помощь\n'
+    text = text_help
     bot.reply_to(message, text)
 
 
